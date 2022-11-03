@@ -1,0 +1,55 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:games/app/home/widgets/buttons.dart';
+import 'package:get/get.dart';
+import '../controller/Edit_controller.dart';
+import '../widgets/widgets.dart';
+
+class EditGameView extends GetView<EditController> {
+  const EditGameView({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: Colors.black87),
+        title: Text('edit_game'.tr , style: const TextStyle(color: Colors.black,),),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              CustomTextInput(title: 'title'.tr,controller: controller.titleController,),
+              CustomTextInput(title: 'desc'.tr,minLine: 4,maxlenght: true,controller: controller.descController,),
+              CustomTextInput(title: 'max'.tr,controller: controller.playerCount, isNumber: true,),
+              Obx(()=> CustomDateInput(
+                title: 'date_time'.tr,
+                time: controller.date.value.toString(),
+                onPressed: () => controller.pickDate(context),
+              )),
+              Obx(()=> CustomImagePicker(
+                title: 'image'.tr ,
+                image: controller.image.value == ''
+                    ? Icon(Icons.image, size: 80.sp, color: Colors.grey,)
+                    : Image.file(File(controller.image.value) , fit: BoxFit.cover,),
+                onPressed: ()=> controller.pickImage(),
+              )),
+              SizedBox(height: 10.h,),
+              CustomButton(
+                  color: Colors.blueGrey,
+                  onPressed: ()=> controller.editGame(),
+                  size: Size(1.sw ,0.06.sh),
+                  child: Text('edit_game'.tr),
+              )
+            ],
+          ).paddingSymmetric(horizontal: 15.h , vertical: 10),
+        ),
+
+      ),
+    );
+  }
+}
